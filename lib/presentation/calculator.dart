@@ -16,13 +16,14 @@ class CalculatorScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () => calculatorProvider.clearHistory(),
-            icon: const Icon(Icons.delete),
+            icon: const Icon(Icons.history),
             tooltip: 'Clear History',
           ),
         ],
       ),
       body: Column(
         children: [
+          // Display section
           Expanded(
             flex: 2,
             child: Padding(
@@ -30,9 +31,7 @@ class CalculatorScreen extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
-                  borderRadius: BorderRadius.circular(
-                    10,
-                  ),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
                   children: [
@@ -64,7 +63,7 @@ class CalculatorScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Keypad
+          // Keypad section
           Expanded(
             flex: 6,
             child: Column(
@@ -72,6 +71,12 @@ class CalculatorScreen extends StatelessWidget {
                 _buildKeypadRow(
                   context,
                   ['C', 'sin', 'cos', 'tan'],
+                  isAdvanced: true,
+                ),
+                _buildKeypadRow(
+                  context,
+                  ['log10', 'ln', '√', '!'],
+                  isAdvanced: true,
                 ),
                 _buildKeypadRow(
                   context,
@@ -97,7 +102,8 @@ class CalculatorScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildKeypadRow(BuildContext context, List<String> keys) {
+  Widget _buildKeypadRow(BuildContext context, List<String> keys,
+      {bool isAdvanced = false}) {
     final calculatorProvider = Provider.of<CalculatorProvider>(context);
     return Expanded(
       child: Row(
@@ -109,17 +115,20 @@ class CalculatorScreen extends StatelessWidget {
                 calculatorProvider.clearInput();
               } else if (key == '=') {
                 calculatorProvider.calculateResult();
+              } else if (isAdvanced) {
+                calculatorProvider.performAdvancedOperation(key);
               } else {
                 calculatorProvider.appendInput(key);
               }
             },
             style: ElevatedButton.styleFrom(
-                minimumSize: const Size(60, 50),
-                backgroundColor: getBgColor(key, context)),
+              minimumSize: const Size(60, 50),
+              backgroundColor: getBgColor(key, context),
+            ),
             child: Text(
               key,
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 20,
                 color: getTextColor(key, context),
               ),
             ),
@@ -134,8 +143,8 @@ class CalculatorScreen extends StatelessWidget {
       return Theme.of(context).colorScheme.error;
     } else if (key == '=') {
       return Theme.of(context).colorScheme.primary;
-    } else if (key == 'sin' || key == 'cos' || key == 'tan') {
-      return Theme.of(context).colorScheme.primary;
+    } else if (['sin', 'cos', 'tan', 'log10', 'ln', '√', '!'].contains(key)) {
+      return Theme.of(context).colorScheme.secondary;
     }
     return Theme.of(context).cardColor;
   }

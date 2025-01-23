@@ -157,7 +157,6 @@ class CalculatorProvider extends ChangeNotifier {
 
   double _degreesToRadians(double degrees) => degrees * pi / 180;
 
-  /// Performs advanced operations based on the function name
   void performAdvancedOperation(String function) {
     try {
       if (_input.isEmpty) {

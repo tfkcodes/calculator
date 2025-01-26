@@ -2,9 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/calculator_provider.dart';
 
-class CalculatorScreen extends StatelessWidget {
+class CalculatorScreen extends StatefulWidget {
   const CalculatorScreen({Key? key}) : super(key: key);
 
+  @override
+  State<CalculatorScreen> createState() => _CalculatorScreenState();
+}
+
+class _CalculatorScreenState extends State<CalculatorScreen> {
+  String activeSubject = 'Mathematics';
+
+  final List<String> subjects = [
+    'Economics',
+    'Mathematics',
+    'Physics',
+    'History',
+    'Community',
+  ];
   @override
   Widget build(BuildContext context) {
     final calculatorProvider = Provider.of<CalculatorProvider>(context);
@@ -12,7 +26,7 @@ class CalculatorScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       appBar: AppBar(
-        title: const Text('Scientific Calculator'),
+        title: const Text('Dike Calculator'),
         actions: [
           IconButton(
             onPressed: () => calculatorProvider.clearHistory(),
@@ -23,7 +37,6 @@ class CalculatorScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Display section
           Expanded(
             flex: 2,
             child: Padding(
@@ -36,7 +49,7 @@ class CalculatorScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.only(right: 10, top: 10),
                       alignment: Alignment.centerRight,
                       child: Text(
                         calculatorProvider.input,
@@ -47,14 +60,19 @@ class CalculatorScreen extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.only(right: 10, top: 10),
                       alignment: Alignment.centerRight,
-                      child: Text(
-                        calculatorProvider.result,
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.surface,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          calculatorProvider.result,
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.surface,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
@@ -70,7 +88,7 @@ class CalculatorScreen extends StatelessWidget {
               children: [
                 _buildKeypadRow(
                   context,
-                  ['C', 'sin', 'cos', 'tan'],
+                  ['Clear', 'sin', 'cos', 'tan'],
                   isAdvanced: true,
                 ),
                 _buildKeypadRow(
@@ -111,7 +129,7 @@ class CalculatorScreen extends StatelessWidget {
         children: keys.map((key) {
           return ElevatedButton(
             onPressed: () {
-              if (key == 'C') {
+              if (key == 'Clear') {
                 calculatorProvider.clearInput();
               } else if (key == '=') {
                 calculatorProvider.calculateResult();
@@ -139,7 +157,7 @@ class CalculatorScreen extends StatelessWidget {
   }
 
   Color getBgColor(String key, BuildContext context) {
-    if (key == 'C') {
+    if (key == 'Clear') {
       return Theme.of(context).colorScheme.error;
     } else if (key == '=') {
       return Theme.of(context).colorScheme.primary;
@@ -150,7 +168,7 @@ class CalculatorScreen extends StatelessWidget {
   }
 
   Color getTextColor(String key, BuildContext context) {
-    if (key == 'C') {
+    if (key == 'Clear') {
       return Theme.of(context).colorScheme.onError;
     } else if (key == '=') {
       return Theme.of(context).colorScheme.onPrimary;

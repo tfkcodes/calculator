@@ -155,6 +155,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
+  plugin_platform_interface:
+    dependency: transitive
+    description:
+      name: plugin_platform_interface
+      sha256: "4820fbfdb9478b1ebae27888254d445073732dae3d6ea81f0b7e06d5dedc3f02"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.8"
   provider:
     dependency: "direct main"
     description:
@@ -216,6 +224,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.2"
+  tfk_toast:
+    dependency: "direct main"
+    description:
+      name: tfk_toast
+      sha256: "9b568ee8ee6d5bc5b5303e6267eef841b59a86b5efa1f237464ff9f6e6a8cf29"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.3"
   vector_math:
     dependency: transitive
     description:

@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
+import 'package:tfk_toast/enum.dart';
+import 'package:tfk_toast/tfk_toast.dart';
 
 class CalculatorProvider extends ChangeNotifier {
   String _input = '';
@@ -45,13 +47,23 @@ class CalculatorProvider extends ChangeNotifier {
   double _evaluateExpression(String expression) {
     try {
       final parser = Parser();
-      final exp = parser.parse(
-        expression.replaceAll('×', '*').replaceAll('÷', '/'),
-      );
+      final formattedExpression = expression
+          .replaceAll('×', '*')
+          .replaceAll('÷', '/')
+          .replaceAll('√', 'sqrt')
+          .replaceAll('log10', 'log')
+          .replaceAll('ln', 'ln')
+          .replaceAll('!', 'fact');
+
+      final exp = parser.parse(formattedExpression);
       final context = ContextModel();
       return exp.evaluate(EvaluationType.REAL, context);
     } catch (e) {
-      throw Exception('Invalid Expression');
+      throw  TfkToast.showToast(
+        "Invalid Expression",
+        type: ToastType.error,
+        animation: ToastAnimation.wobble,
+      );
     }
   }
 
@@ -82,12 +94,16 @@ class CalculatorProvider extends ChangeNotifier {
             return log(number) / ln10;
           case 'ln':
             return log(number);
-          case 'sqrt':
+          case '√':
             return sqrt(number);
-          case 'factorial':
+          case '!':
             return factorial(number);
           default:
-            throw Exception('Unsupported function: $function');
+            throw TfkToast.showToast(
+              "Unsupported Function $function",
+              type: ToastType.error,
+              animation: ToastAnimation.wobble,
+            );
         }
       }();
 
@@ -103,7 +119,11 @@ class CalculatorProvider extends ChangeNotifier {
   double _degreesToRadians(double degrees) => degrees * pi / 180;
   double factorial(double n) {
     if (n < 0 || n != n.floorToDouble()) {
-      throw Exception('Factorial is defined for non-negative integers only');
+      throw TfkToast.showToast(
+        "Factorial is defined for non-negative integers only",
+        type: ToastType.warning,
+        animation: ToastAnimation.wobble,
+      );
     }
     return (n == 0)
         ? 1

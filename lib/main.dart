@@ -3,6 +3,7 @@ import 'package:calculator/presentation/calculator.dart';
 import 'package:calculator/providers/calculator_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tfk_toast/tfk_toast.dart';
 
 import 'providers/theme_provider.dart';
 
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'Fansika',
             debugShowCheckedModeBanner: false,
+            navigatorKey:TfkToast.navigatorKey,
             theme: Themes().lightTheme,
             darkTheme: Themes().darkTheme,
             themeMode: theme.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
